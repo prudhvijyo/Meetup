@@ -1,18 +1,19 @@
-import NavBar from '../Navbar'
-import HistoryContext from '../../Context/RegisterContext'
+import Header from '../Header'
+
+import RegisterContext from '../../context/RegisterContext'
+
 import {
-  MainDiv,
-  RegisterCardDiv,
+  RegisterContainer,
   RegisterImg,
-  RegisterForm,
-  FormH1,
+  Form,
+  RegisterHeading,
+  InputContainer,
   Label,
   Input,
   Select,
-  Option,
-  FormBtn,
-  ErrP,
-} from './styledComponent'
+  RegisterButton,
+  ErrorMsg,
+} from './style'
 
 const topicsList = [
   {
@@ -38,69 +39,82 @@ const topicsList = [
 ]
 
 const Register = props => (
-  <HistoryContext.Consumer>
+  <RegisterContext.Consumer>
     {value => {
       const {
-        changeRegistrationStatus,
-        updateName,
-        updateTopic,
-        topic,
         name,
-        registerErr,
-        updateErr,
+        topic,
+        changeName,
+        changeTopic,
+        showError,
+        registerName,
+        updateError,
       } = value
-      const submitForm = event => {
+
+      const submitRegistration = event => {
         event.preventDefault()
-        changeRegistrationStatus()
+
         if (name !== '' && topic !== '') {
           const {history} = props
           history.replace('/')
+          registerName()
         } else {
-          updateErr(true)
+          updateError()
         }
       }
-      const onChangeTopic = event => {
-        updateTopic(event.target.value)
-      }
+
       const onChangeName = event => {
-        updateName(event.target.value)
+        changeName(event.target.value)
       }
+
+      const onChangeTopic = event => {
+        changeTopic(event.target.value)
+      }
+
       return (
-        <>
-          <NavBar />
-          <MainDiv>
-            <RegisterCardDiv>
+        <div>
+          <Header />
+          <div>
+            <RegisterContainer>
               <RegisterImg
                 src="https://assets.ccbp.in/frontend/react-js/meetup/website-register-img.png"
                 alt="website register"
               />
-              <RegisterForm onClick={submitForm}>
-                <FormH1>Let us join</FormH1>
-                <Label htmlFor="name">NAME</Label>
-                <Input
-                  type="text"
-                  id="name"
-                  value={name}
-                  placeholder="Your name"
-                  onChange={onChangeName}
-                />
-                <Label htmlFor="topic">TOPICS</Label>
-                <Select id="topic" value={topic} onChange={onChangeTopic}>
-                  {topicsList.map(each => (
-                    <Option key={each.id} value={each.id}>
-                      {each.displayText}
-                    </Option>
-                  ))}
-                </Select>
-                <FormBtn type="submit">Register Now</FormBtn>
-                {registerErr ? <ErrP>Please enter your name</ErrP> : null}
-              </RegisterForm>
-            </RegisterCardDiv>
-          </MainDiv>
-        </>
+              <Form onSubmit={submitRegistration}>
+                <RegisterHeading>Let us join</RegisterHeading>
+                <InputContainer>
+                  <Label htmlFor="name">NAME</Label>
+                  <Input
+                    id="name"
+                    value={name}
+                    type="text"
+                    onChange={onChangeName}
+                    placeholder="Your name"
+                  />
+                </InputContainer>
+                <InputContainer>
+                  <Label htmlFor="topic">Topics</Label>
+                  <Select id="topic" value={topic} onChange={onChangeTopic}>
+                    {topicsList.map(each => (
+                      <option value={each.id} key={each.id}>
+                        {each.displayText}
+                      </option>
+                    ))}
+                  </Select>
+                </InputContainer>
+                <RegisterButton type="submit">Register Now</RegisterButton>
+                {showError === true ? (
+                  <ErrorMsg>Please enter your name</ErrorMsg>
+                ) : (
+                  ''
+                )}
+              </Form>
+            </RegisterContainer>
+          </div>
+        </div>
       )
     }}
-  </HistoryContext.Consumer>
+  </RegisterContext.Consumer>
 )
 
 export default Register

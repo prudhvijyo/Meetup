@@ -1,21 +1,16 @@
-import {
-  NotFoundDiv,
-  NotFoundImg,
-  NotFoundH1,
-  NotFoundP,
-} from './styledComponent'
+import {NotFoundContainer, NotFoundHeading, NotFoundPara, Img} from './style'
 
 const NotFound = () => (
-  <NotFoundDiv>
-    <NotFoundImg
+  <NotFoundContainer>
+    <Img
       src="https://assets.ccbp.in/frontend/react-js/meetup/not-found-img.png"
       alt="not found"
     />
-    <NotFoundH1>Page Not Found</NotFoundH1>
-    <NotFoundP>
-      We are sorry, the page you requested could not be found
-    </NotFoundP>
-  </NotFoundDiv>
+    <NotFoundHeading>Page not Found</NotFoundHeading>
+    <NotFoundPara>
+      We are sorry, the page you requested could not be found.
+    </NotFoundPara>
+  </NotFoundContainer>
 )
 
 export default NotFound
